@@ -15,7 +15,7 @@ apply plugin: 'maven-publish'
 
 version = '1.16.X-1.0'
 group = 'com.sekelsta.panda_genetics_tweak' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'panda_geentics_tweak'
+archivesBaseName = 'panda_genetics_tweak'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
