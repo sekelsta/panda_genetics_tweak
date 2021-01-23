@@ -42,6 +42,6 @@ Allows brown pandas to be playful, lazy, worried, and so on, just like black pan
 [[dependencies.panda_genetics_tweak]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.1,1.16.4]"
+    versionRange="[1.16.1,1.16.5]"
     ordering="NONE"
     side="BOTH"

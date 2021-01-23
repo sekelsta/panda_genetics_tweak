@@ -13,6 +13,7 @@ import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,15 +34,20 @@ public class PandaGenetics
 
     public PandaGenetics() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.addListener(this::loadPanda);
         MinecraftForge.EVENT_BUS.addListener(this::breedPanda);
         MinecraftForge.EVENT_BUS.addListener(this::trackPanda);
-        PandaGeneticsPacketHandler.registerPackets();
     }
 
     private void clientSetup(final FMLClientSetupEvent event)
     {
         RenderingRegistry.registerEntityRenderingHandler(EntityType.PANDA, BrownPandaRenderer::new);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event)
+    {
+        PandaGeneticsPacketHandler.registerPackets();
     }
 
     private void loadPanda(EntityJoinWorldEvent event) {

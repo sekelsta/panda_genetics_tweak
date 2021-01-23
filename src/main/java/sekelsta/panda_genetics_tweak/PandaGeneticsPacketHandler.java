@@ -1,5 +1,6 @@
 package sekelsta.panda_genetics_tweak;
 
+import java.util.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +26,8 @@ public class PandaGeneticsPacketHandler {
 
     public static void registerPackets() {
         CHANNEL.registerMessage(ID++, SGenesPacket.class, SGenesPacket::encode,
-            SGenesPacket::decode, SGenesPacket::handle);
+            SGenesPacket::decode, ClientPacketHandler::handleGenesPacket,
+            Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     // Send entity's gene info to player
