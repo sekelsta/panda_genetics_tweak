@@ -1,12 +1,12 @@
 package sekelsta.panda_genetics_tweak;
 
 import java.util.Optional;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 public class PandaGeneticsPacketHandler {
     private static int ID = 0;
@@ -31,8 +31,8 @@ public class PandaGeneticsPacketHandler {
     }
 
     // Send entity's gene info to player
-    public static void sendGenesPacket(ServerPlayerEntity player, Entity entity) {
+    public static void sendGenesPacket(ServerPlayer player, Entity entity) {
         SGenesPacket packet = new SGenesPacket(entity);
-        CHANNEL.sendTo(packet, player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+        CHANNEL.sendTo(packet, player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
 }

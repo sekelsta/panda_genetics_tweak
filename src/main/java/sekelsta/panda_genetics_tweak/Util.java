@@ -1,19 +1,19 @@
 package sekelsta.panda_genetics_tweak;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 
 public class Util {
     // Helper for looking at gene data
-    public static CompoundNBT getGeneticsTag(Entity entity) {
-        CompoundNBT tag = entity.getPersistentData().getCompound("PandaGenetics");
+    public static CompoundTag getGeneticsTag(Entity entity) {
+        CompoundTag tag = entity.getPersistentData().getCompound("PandaGenetics");
         if (!entity.getPersistentData().contains("PandaGenetics")) {
             entity.getPersistentData().put("PandaGenetics", tag);
         }
         return tag;
     }
 
-    public static void setGeneticsTag(Entity entity, CompoundNBT tag) {
+    public static void setGeneticsTag(Entity entity, CompoundTag tag) {
         entity.getPersistentData().put("PandaGenetics", tag);
     }
 }
