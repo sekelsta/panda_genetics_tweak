@@ -1,0 +1,1 @@
+/summon minecraft:panda ~ ~ ~ {ForgeData: {PandaGenetics: {brown2: 1b, brown1: 1b}}, HiddenGene:"weak", MainGene:"lazy"}
