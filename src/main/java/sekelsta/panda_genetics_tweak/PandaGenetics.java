@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -50,7 +50,7 @@ public class PandaGenetics
         PandaGeneticsPacketHandler.registerPackets();
     }
 
-    private void loadPanda(EntityJoinWorldEvent event) {
+    private void loadPanda(EntityJoinLevelEvent event) {
         if (!(event.getEntity() instanceof Panda)) {
             return;
         }
@@ -95,8 +95,8 @@ public class PandaGenetics
 
     private void trackPanda(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof Panda
-                && event.getPlayer() instanceof ServerPlayer) {
-            PandaGeneticsPacketHandler.sendGenesPacket((ServerPlayer)event.getPlayer(), event.getTarget());
+                && event.getEntity() instanceof ServerPlayer) {
+            PandaGeneticsPacketHandler.sendGenesPacket((ServerPlayer)event.getEntity(), event.getTarget());
         }
     }
 }
