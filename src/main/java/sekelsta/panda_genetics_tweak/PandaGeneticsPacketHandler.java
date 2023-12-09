@@ -33,6 +33,6 @@ public class PandaGeneticsPacketHandler {
     // Send entity's gene info to player
     public static void sendGenesPacket(ServerPlayer player, Entity entity) {
         SGenesPacket packet = new SGenesPacket(entity);
-        CHANNEL.sendTo(packet, player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+        CHANNEL.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 }

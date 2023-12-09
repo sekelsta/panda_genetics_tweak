@@ -1,5 +1,6 @@
 package sekelsta.panda_genetics_tweak;
 
+import java.util.Locale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.PandaRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +25,7 @@ public class BrownPandaRenderer extends PandaRenderer {
         boolean isBrown = Util.getGeneticsTag(panda).getBoolean("brown1") 
                         && Util.getGeneticsTag(panda).getBoolean("brown2");
         Panda.Gene type = panda.getVariant();
-        String name = type.getName();
+        String name = type.toString().toLowerCase(Locale.ENGLISH);
         if (type == Panda.Gene.BROWN || type == Panda.Gene.NORMAL) {
             name = "";
         }
