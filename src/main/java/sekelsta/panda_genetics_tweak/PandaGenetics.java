@@ -1,22 +1,27 @@
 package sekelsta.panda_genetics_tweak;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Panda;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import org.slf4j.Logger;
 
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -25,29 +30,23 @@ import java.util.stream.Collectors;
 @Mod(PandaGenetics.MODID)
 public class PandaGenetics
 {
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final String MODID = "panda_genetics_tweak";
 
     public static Random rand = new Random();
 
-    public PandaGenetics() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.addListener(this::loadPanda);
-        MinecraftForge.EVENT_BUS.addListener(this::breedPanda);
-        MinecraftForge.EVENT_BUS.addListener(this::trackPanda);
+    public PandaGenetics(IEventBus modEventBus) {
+        modEventBus.addListener(this::clientSetup);
+        NeoForge.EVENT_BUS.addListener(this::loadPanda);
+        NeoForge.EVENT_BUS.addListener(this::breedPanda);
+        NeoForge.EVENT_BUS.addListener(this::trackPanda);
+        modEventBus.addListener(PandaGeneticsNetworking::register);
     }
 
     private void clientSetup(final EntityRenderersEvent.RegisterRenderers event)
     {
         event.registerEntityRenderer(EntityType.PANDA, BrownPandaRenderer::new);
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-        PandaGeneticsPacketHandler.registerPackets();
     }
 
     private void loadPanda(EntityJoinLevelEvent event) {
@@ -96,7 +95,7 @@ public class PandaGenetics
     private void trackPanda(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof Panda
                 && event.getEntity() instanceof ServerPlayer) {
-            PandaGeneticsPacketHandler.sendGenesPacket((ServerPlayer)event.getEntity(), event.getTarget());
+            PandaGeneticsNetworking.sendGenesPacket((ServerPlayer)event.getEntity(), event.getTarget());
         }
     }
 }
